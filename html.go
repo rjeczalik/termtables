@@ -87,7 +87,9 @@ func (t *Table) RenderHTML() (buffer string) {
 			rowsText = append(rowsText, generateHtmlTitleRow(t.title, t, style))
 		}
 		if t.headers != nil {
-			rowsText = append(rowsText, CreateRow(t.headers).HTML("th", style))
+			for _, row := range t.headers {
+				rowsText = append(rowsText, CreateRow(row).HTML("th", style))
+			}
 		}
 		rowsText = append(rowsText, "</thead>\n")
 	}

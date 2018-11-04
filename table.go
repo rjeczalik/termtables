@@ -50,7 +50,7 @@ type Table struct {
 	Style *TableStyle
 
 	elements   []Element
-	headers    []interface{}
+	headers    [][]interface{}
 	title      interface{}
 	titleCell  *Cell
 	outputMode outputMode
@@ -167,9 +167,10 @@ func (t *Table) AddTitle(title interface{}) {
 	t.title = title
 }
 
-// AddHeaders supplies column headers for the table.
-func (t *Table) AddHeaders(headers ...interface{}) {
-	t.headers = append(t.headers, headers...)
+// AddHeaderRow add a header row for the table. You can call this multiple
+// times to create multiple header rows.
+func (t *Table) AddHeaderRow(headers ...interface{}) {
+	t.headers = append(t.headers, headers)
 }
 
 // SetAlign changes the alignment for elements in a column of the table;
@@ -258,12 +259,14 @@ func (t *Table) renderTerminal() string {
 
 	// If we have headers, include them.
 	if tt.headers != nil {
-		ne := make([]Element, 2)
-		ne[1] = CreateRow(tt.headers)
-		if tt.title != nil {
-			ne[0] = &Separator{where: LINE_SUBTOP}
-		} else {
-			ne[0] = &Separator{where: LINE_TOP}
+		ne := make([]Element, len(tt.headers)+1)
+		for i, row := range tt.headers {
+			ne[i+1] = CreateRow(row)
+			if tt.title != nil {
+				ne[0] = &Separator{where: LINE_SUBTOP}
+			} else {
+				ne[0] = &Separator{where: LINE_TOP}
+			}
 		}
 		tt.elements = append(ne, tt.elements...)
 	}
@@ -321,7 +324,9 @@ func (t *Table) renderMarkdown() string {
 		}
 	}
 
-	firstLines = append(firstLines, CreateRow(t.headers))
+	for _, row := range t.headers {
+		firstLines = append(firstLines, CreateRow(row))
+	}
 	// This is a dummy line, swapped out below.
 	firstLines = append(firstLines, firstLines[0])
 	t.elements = append(firstLines, t.elements...)
@@ -360,7 +365,7 @@ func (t *Table) renderMarkdown() string {
 func (t *Table) clone() *Table {
 	tt := &Table{outputMode: t.outputMode, Style: t.Style, title: t.title}
 	if t.headers != nil {
-		tt.headers = make([]interface{}, len(t.headers))
+		tt.headers = make([][]interface{}, len(t.headers))
 		copy(tt.headers, t.headers)
 	}
 	if t.elements != nil {

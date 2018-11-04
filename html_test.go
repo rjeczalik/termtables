@@ -22,7 +22,7 @@ func TestCreateTableHTML(t *testing.T) {
 	table := CreateTable()
 	table.SetModeHTML()
 
-	table.AddHeaders("Name", "Value")
+	table.AddHeaderRow("Name", "Value")
 	table.AddRow("hey", "you")
 	table.AddRow("ken", 1234)
 	table.AddRow("derek", 3.14)
@@ -52,7 +52,7 @@ func TestTableWithHeaderHTML(t *testing.T) {
 	table.SetModeHTML()
 
 	table.AddTitle("Example")
-	table.AddHeaders("Name", "Value")
+	table.AddHeaderRow("Name", "Value")
 	table.AddRow("hey", "you")
 	table.AddRow("ken", 1234)
 	table.AddRow("derek", 3.14)
@@ -82,7 +82,7 @@ func TestTableTitleWidthAdjustsHTML(t *testing.T) {
 	table.SetModeHTML()
 
 	table.AddTitle("Example My Foo Bar'd Test")
-	table.AddHeaders("Name", "Value")
+	table.AddHeaderRow("Name", "Value")
 	table.AddRow("hey", "you")
 	table.AddRow("ken", 1234)
 	table.AddRow("derek", 3.14)
@@ -133,7 +133,7 @@ func TestTableUnicodeWidthsHTML(t *testing.T) {
 
 	table := CreateTable()
 	table.SetModeHTML()
-	table.AddHeaders("Name", "Cost")
+	table.AddHeaderRow("Name", "Cost")
 	table.AddRow("Currency", "¤10")
 	table.AddRow("US Dollar", "$30")
 	table.AddRow("Euro", "€27")
@@ -158,7 +158,7 @@ func TestTableWithAlignment(t *testing.T) {
 
 	table := CreateTable()
 	table.SetModeHTML()
-	table.AddHeaders("Foo", "Bar")
+	table.AddHeaderRow("Foo", "Bar")
 	table.AddRow("humpty", "dumpty")
 	table.AddRow(CreateCell("r", &CellStyle{Alignment: AlignRight}), "<- on right")
 
@@ -182,7 +182,7 @@ func TestTableAfterSetAlign(t *testing.T) {
 
 	table := CreateTable()
 	table.SetModeHTML()
-	table.AddHeaders("Alphabetical", "Num")
+	table.AddHeaderRow("Alphabetical", "Num")
 	table.AddRow("alfa", 1)
 	table.AddRow("bravo", 2)
 	table.AddRow("charlie", 3)
@@ -211,7 +211,7 @@ func TestTableWithAltTitleStyle(t *testing.T) {
 	table.SetModeHTML()
 	table.SetHTMLStyleTitle(TitleAsThSpan)
 	table.AddTitle("Metasyntactic")
-	table.AddHeaders("Foo", "Bar", "Baz")
+	table.AddHeaderRow("Foo", "Bar", "Baz")
 	table.AddRow("a", "b", "c")
 	table.AddRow("α", "β", "γ")
 

@@ -32,7 +32,7 @@ func TestCreateTable(t *testing.T) {
 
 	table := CreateTable()
 
-	table.AddHeaders("Name", "Value")
+	table.AddHeaderRow("Name", "Value")
 	table.AddRow("hey", "you")
 	table.AddRow("ken", 1234)
 	table.AddRow("derek", 3.14)
@@ -57,7 +57,7 @@ func TestStyleResets(t *testing.T) {
 	table.UTF8Box()
 	table.Style.setAsciiBoxStyle()
 
-	table.AddHeaders("Name", "Value")
+	table.AddHeaderRow("Name", "Value")
 	table.AddRow("hey", "you")
 	table.AddRow("ken", 1234)
 	table.AddRow("derek", 3.14)
@@ -82,7 +82,7 @@ func TestTableWithHeader(t *testing.T) {
 	table := CreateTable()
 
 	table.AddTitle("Example")
-	table.AddHeaders("Name", "Value")
+	table.AddHeaderRow("Name", "Value")
 	table.AddRow("hey", "you")
 	table.AddRow("ken", 1234)
 	table.AddRow("derek", 3.14)
@@ -109,7 +109,7 @@ func TestTableWithHeaderMultipleTimes(t *testing.T) {
 	table := CreateTable()
 
 	table.AddTitle("Example")
-	table.AddHeaders("Name", "Value")
+	table.AddHeaderRow("Name", "Value")
 	table.AddRow("hey", "you")
 	table.AddRow("ken", 1234)
 	table.AddRow("derek", 3.14)
@@ -135,7 +135,7 @@ func TestTableTitleWidthAdjusts(t *testing.T) {
 	table := CreateTable()
 
 	table.AddTitle("Example My Foo Bar'd Test")
-	table.AddHeaders("Name", "Value")
+	table.AddHeaderRow("Name", "Value")
 	table.AddRow("hey", "you")
 	table.AddRow("ken", 1234)
 	table.AddRow("derek", 3.14)
@@ -154,7 +154,7 @@ func TestTableHeaderWidthAdjusts(t *testing.T) {
 
 	table := CreateTable()
 
-	table.AddHeaders("Slightly Long", "More than 2 columns")
+	table.AddHeaderRow("Slightly Long", "More than 2 columns")
 	table.AddRow("a", "b")
 
 	checkRendersTo(t, table, expected)
@@ -191,7 +191,7 @@ func TestTableUnicodeWidths(t *testing.T) {
 		"+-----------+------+\n"
 
 	table := CreateTable()
-	table.AddHeaders("Name", "Cost")
+	table.AddHeaderRow("Name", "Cost")
 	table.AddRow("Currency", "¤10")
 	table.AddRow("US Dollar", "$30")
 	table.AddRow("Euro", "€27")
@@ -218,7 +218,7 @@ func TestTableInUTF8(t *testing.T) {
 	table.UTF8Box()
 
 	table.AddTitle("Example")
-	table.AddHeaders("Name", "Value")
+	table.AddHeaderRow("Name", "Value")
 	table.AddRow("hey", "you")
 	table.AddRow("ken", 1234)
 	table.AddRow("derek", 3.14)
@@ -252,7 +252,7 @@ func TestTableUnicodeUTF8AndSGR(t *testing.T) {
 	table.UTF8Box()
 
 	table.AddTitle(bold("Fanciness"))
-	table.AddHeaders(sgred("red", "31"), sgred("green", "32"))
+	table.AddHeaderRow(sgred("red", "31"), sgred("green", "32"))
 	table.AddRow("plain", "text")
 	table.AddRow("Καλημέρα", "κόσμε") // from http://plan9.bell-labs.com/sys/doc/utf.html
 	table.AddRow(bold("very"), sgred("underlined", "4"))
@@ -282,7 +282,7 @@ func TestTableInMarkdown(t *testing.T) {
 	table.SetModeMarkdown()
 
 	table.AddTitle("Example")
-	table.AddHeaders("Name", "Value")
+	table.AddHeaderRow("Name", "Value")
 	table.AddRow("hey", "you")
 	table.AddRow("a | b", "esc")
 	table.AddRow("esc", "rox%%")
@@ -390,7 +390,7 @@ func TestTableAlignPostsetting(t *testing.T) {
 
 	table := CreateTable()
 
-	table.AddHeaders("Name", "Value")
+	table.AddHeaderRow("Name", "Value")
 	table.AddRow("hey", "you")
 	table.AddRow("ken", 1234)
 	table.AddRow("derek", 3.14)
@@ -415,7 +415,7 @@ func TestTableMissingCells(t *testing.T) {
 
 	table := CreateTable()
 
-	table.AddHeaders("Name", "Value 1", "Value 2")
+	table.AddHeaderRow("Name", "Value 1", "Value 2")
 	table.AddRow("hey", "you", "person")
 	table.AddRow("ken", 1234)
 	table.AddRow("escaping", "rox%s%%")
@@ -474,7 +474,7 @@ func TestCJKChars(t *testing.T) {
 		"+-------+---------+----------+\n"
 
 	table := CreateTable()
-	table.AddHeaders("KeyID", "ValueID", "ValueCN")
+	table.AddHeaderRow("KeyID", "ValueID", "ValueCN")
 	table.AddRow("8", 51, "精钢")
 	table.AddRow("8", 52, "鳄鱼皮")
 	table.AddRow("8", 53, "镀金皮带")
@@ -492,7 +492,7 @@ func TestCJKChars(t *testing.T) {
 		"| NameJP             | ムーブメントのタイプ |\n" +
 		"+--------------------+----------------------+\n"
 	table = CreateTable()
-	table.AddHeaders("field", "value")
+	table.AddHeaderRow("field", "value")
 	table.AddRow("GoodsPropertyKeyID", 9)
 	table.AddRow("MerchantAccountID", 0)
 	table.AddRow("GoodsCategoryCode", 100001)
@@ -501,18 +501,19 @@ func TestCJKChars(t *testing.T) {
 	checkRendersTo(t, table, expected2)
 }
 
-func TestTableMultipleAddHeader(t *testing.T) {
+func TestTableMultipleAddHeaderRow(t *testing.T) {
 	expected := "" +
-		"+--------------+--------+-------+\n" +
-		"| First column | Second | Third |\n" +
-		"+--------------+--------+-------+\n" +
-		"| 2            | 3      | 5     |\n" +
-		"+--------------+--------+-------+\n"
+		"+--------------+--------+\n" +
+		"| First column | Second |\n" +
+		"| Sub          | Sub    |\n" +
+		"+--------------+--------+\n" +
+		"| 2            | 3      |\n" +
+		"+--------------+--------+\n"
 
 	table := CreateTable()
-	table.AddHeaders("First column", "Second")
-	table.AddHeaders("Third")
-	table.AddRow(2, 3, 5)
+	table.AddHeaderRow("First column", "Second")
+	table.AddHeaderRow("Sub", "Sub")
+	table.AddRow(2, 3)
 
 	checkRendersTo(t, table, expected)
 }
@@ -523,7 +524,7 @@ func createTestTable() *Table {
 	for i := 0; i < 50; i++ {
 		header = append(header, "First Column")
 	}
-	table.AddHeaders(header...)
+	table.AddHeaderRow(header...)
 	for i := 0; i < 3000; i++ {
 		row := []interface{}{}
 		for i := 0; i < 50; i++ {
