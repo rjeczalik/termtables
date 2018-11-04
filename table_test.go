@@ -1,34 +1,22 @@
 // Copyright 2012-2013 Apcera Inc. All rights reserved.
 package termtables
 
-import "testing"
-
-func DisplayFailedOutput(actual, expected string) string {
-	return "Output didn't match expected\n\n" +
-		"Actual:\n\n" +
-		actual + "\n" +
-		"Expected:\n\n" +
-		expected
-}
-
-func checkRendersTo(t *testing.T, table *Table, expected string) {
-	output := table.Render()
-	if output != expected {
-		t.Fatal(DisplayFailedOutput(output, expected))
-	}
-}
+import (
+	"testing"
+)
 
 func TestCreateTable(t *testing.T) {
-	expected := "" +
-		"+-----------+-------+\n" +
-		"| Name      | Value |\n" +
-		"+-----------+-------+\n" +
-		"| hey       | you   |\n" +
-		"| ken       | 1234  |\n" +
-		"| derek     | 3.14  |\n" +
-		"| derek too | 3.15  |\n" +
-		"| escaping  | rox%% |\n" +
-		"+-----------+-------+\n"
+	expected := trim(`
++-----------+-------+
+| Name      | Value |
++-----------+-------+
+| hey       | you   |
+| ken       | 1234  |
+| derek     | 3.14  |
+| derek too | 3.15  |
+| escaping  | rox%% |
++-----------+-------+
+`)
 
 	table := CreateTable()
 
@@ -43,15 +31,16 @@ func TestCreateTable(t *testing.T) {
 }
 
 func TestStyleResets(t *testing.T) {
-	expected := "" +
-		"+-----------+-------+\n" +
-		"| Name      | Value |\n" +
-		"+-----------+-------+\n" +
-		"| hey       | you   |\n" +
-		"| ken       | 1234  |\n" +
-		"| derek     | 3.14  |\n" +
-		"| derek too | 3.15  |\n" +
-		"+-----------+-------+\n"
+	expected := trim(`
++-----------+-------+
+| Name      | Value |
++-----------+-------+
+| hey       | you   |
+| ken       | 1234  |
+| derek     | 3.14  |
+| derek too | 3.15  |
++-----------+-------+
+`)
 
 	table := CreateTable()
 	table.UTF8Box()
@@ -67,17 +56,18 @@ func TestStyleResets(t *testing.T) {
 }
 
 func TestTableWithHeader(t *testing.T) {
-	expected := "" +
-		"+-------------------+\n" +
-		"|      Example      |\n" +
-		"+-----------+-------+\n" +
-		"| Name      | Value |\n" +
-		"+-----------+-------+\n" +
-		"| hey       | you   |\n" +
-		"| ken       | 1234  |\n" +
-		"| derek     | 3.14  |\n" +
-		"| derek too | 3.15  |\n" +
-		"+-----------+-------+\n"
+	expected := trim(`
++-------------------+
+|      Example      |
++-----------+-------+
+| Name      | Value |
++-----------+-------+
+| hey       | you   |
+| ken       | 1234  |
+| derek     | 3.14  |
+| derek too | 3.15  |
++-----------+-------+
+`)
 
 	table := CreateTable()
 
@@ -94,17 +84,18 @@ func TestTableWithHeader(t *testing.T) {
 // TestTableWithHeaderMultipleTimes ensures that printing a table with headers
 // multiple times continues to render correctly.
 func TestTableWithHeaderMultipleTimes(t *testing.T) {
-	expected := "" +
-		"+-------------------+\n" +
-		"|      Example      |\n" +
-		"+-----------+-------+\n" +
-		"| Name      | Value |\n" +
-		"+-----------+-------+\n" +
-		"| hey       | you   |\n" +
-		"| ken       | 1234  |\n" +
-		"| derek     | 3.14  |\n" +
-		"| derek too | 3.15  |\n" +
-		"+-----------+-------+\n"
+	expected := trim(`
++-------------------+
+|      Example      |
++-----------+-------+
+| Name      | Value |
++-----------+-------+
+| hey       | you   |
+| ken       | 1234  |
+| derek     | 3.14  |
+| derek too | 3.15  |
++-----------+-------+
+`)
 
 	table := CreateTable()
 
@@ -120,17 +111,18 @@ func TestTableWithHeaderMultipleTimes(t *testing.T) {
 }
 
 func TestTableTitleWidthAdjusts(t *testing.T) {
-	expected := "" +
-		"+---------------------------+\n" +
-		"| Example My Foo Bar'd Test |\n" +
-		"+-----------+---------------+\n" +
-		"| Name      | Value         |\n" +
-		"+-----------+---------------+\n" +
-		"| hey       | you           |\n" +
-		"| ken       | 1234          |\n" +
-		"| derek     | 3.14          |\n" +
-		"| derek too | 3.15          |\n" +
-		"+-----------+---------------+\n"
+	expected := trim(`
++---------------------------+
+| Example My Foo Bar'd Test |
++-----------+---------------+
+| Name      | Value         |
++-----------+---------------+
+| hey       | you           |
+| ken       | 1234          |
+| derek     | 3.14          |
+| derek too | 3.15          |
++-----------+---------------+
+`)
 
 	table := CreateTable()
 
@@ -145,12 +137,13 @@ func TestTableTitleWidthAdjusts(t *testing.T) {
 }
 
 func TestTableHeaderWidthAdjusts(t *testing.T) {
-	expected := "" +
-		"+---------------+---------------------+\n" +
-		"| Slightly Long | More than 2 columns |\n" +
-		"+---------------+---------------------+\n" +
-		"| a             | b                   |\n" +
-		"+---------------+---------------------+\n"
+	expected := trim(`
++---------------+---------------------+
+| Slightly Long | More than 2 columns |
++---------------+---------------------+
+| a             | b                   |
++---------------+---------------------+
+`)
 
 	table := CreateTable()
 
@@ -161,13 +154,14 @@ func TestTableHeaderWidthAdjusts(t *testing.T) {
 }
 
 func TestTableWithNoHeaders(t *testing.T) {
-	expected := "" +
-		"+-----------+------+\n" +
-		"| hey       | you  |\n" +
-		"| ken       | 1234 |\n" +
-		"| derek     | 3.14 |\n" +
-		"| derek too | 3.15 |\n" +
-		"+-----------+------+\n"
+	expected := trim(`
++-----------+------+
+| hey       | you  |
+| ken       | 1234 |
+| derek     | 3.14 |
+| derek too | 3.15 |
++-----------+------+
+`)
 
 	table := CreateTable()
 
@@ -180,15 +174,16 @@ func TestTableWithNoHeaders(t *testing.T) {
 }
 
 func TestTableUnicodeWidths(t *testing.T) {
-	expected := "" +
-		"+-----------+------+\n" +
-		"| Name      | Cost |\n" +
-		"+-----------+------+\n" +
-		"| Currency  | ¤10  |\n" +
-		"| US Dollar | $30  |\n" +
-		"| Euro      | €27  |\n" +
-		"| Thai      | ฿70  |\n" +
-		"+-----------+------+\n"
+	expected := trim(`
++-----------+------+
+| Name      | Cost |
++-----------+------+
+| Currency  | ¤10  |
+| US Dollar | $30  |
+| Euro      | €27  |
+| Thai      | ฿70  |
++-----------+------+
+`)
 
 	table := CreateTable()
 	table.AddHeaderRow("Name", "Cost")
@@ -201,18 +196,19 @@ func TestTableUnicodeWidths(t *testing.T) {
 }
 
 func TestTableInUTF8(t *testing.T) {
-	expected := "" +
-		"╭───────────────────╮\n" +
-		"│      Example      │\n" +
-		"├───────────┬───────┤\n" +
-		"│ Name      │ Value │\n" +
-		"├───────────┼───────┤\n" +
-		"│ hey       │ you   │\n" +
-		"│ ken       │ 1234  │\n" +
-		"│ derek     │ 3.14  │\n" +
-		"│ derek too │ 3.15  │\n" +
-		"│ escaping  │ rox%% │\n" +
-		"╰───────────┴───────╯\n"
+	expected := trim(`
+╭───────────────────╮
+│      Example      │
+├───────────┬───────┤
+│ Name      │ Value │
+├───────────┼───────┤
+│ hey       │ you   │
+│ ken       │ 1234  │
+│ derek     │ 3.14  │
+│ derek too │ 3.15  │
+│ escaping  │ rox%% │
+╰───────────┴───────╯
+`)
 
 	table := CreateTable()
 	table.UTF8Box()
@@ -224,6 +220,60 @@ func TestTableInUTF8(t *testing.T) {
 	table.AddRow("derek", 3.14)
 	table.AddRow("derek too", 3.1456788)
 	table.AddRow("escaping", "rox%%")
+
+	checkRendersTo(t, table, expected)
+}
+
+func TestTableInUTF8WithMultipleHeaderRows(t *testing.T) {
+	expected := trim(`
+╭───────────────────╮
+│      Example      │
+├───────────┬───────┤
+│ Name      │ Value │
+│ Sub       │ Sub   │
+├───────────┼───────┤
+│ hey       │ you   │
+│ ken       │ 1234  │
+│ derek     │ 3.14  │
+│ derek too │ 3.15  │
+│ escaping  │ rox%% │
+╰───────────┴───────╯
+`)
+
+	table := CreateTable()
+	table.UTF8Box()
+
+	table.AddTitle("Example")
+	table.AddHeaderRow("Name", "Value")
+	table.AddHeaderRow("Sub", "Sub")
+	table.AddRow("hey", "you")
+	table.AddRow("ken", 1234)
+	table.AddRow("derek", 3.14)
+	table.AddRow("derek too", 3.1456788)
+	table.AddRow("escaping", "rox%%")
+
+	checkRendersTo(t, table, expected)
+}
+
+func TestTableInUTF8WithColspan(t *testing.T) {
+	expected := trim(`
+╭──────────────╮
+│   Example    │
+├──────┬───────┤
+│ Name │ Value │
+│ Sub          │
+├──────┼───────┤
+│ hey  │ you   │
+╰──────┴───────╯
+`)
+
+	table := CreateTable()
+	table.UTF8Box()
+
+	table.AddTitle("Example")
+	table.AddHeaderRow("Name", "Value")
+	table.AddHeaderRow(CreateCell("Sub", &CellStyle{ColSpan: 2}))
+	table.AddRow("hey", "you")
 
 	checkRendersTo(t, table, expected)
 }
@@ -265,18 +315,19 @@ func TestTableUnicodeUTF8AndSGR(t *testing.T) {
 	//
 	// Of course, at that point, we'd also want to support automatic HTML
 	// styling conversion too, so would need a test for that also.
-
 	checkRendersTo(t, table, expected)
 }
 
 func TestTableInMarkdown(t *testing.T) {
-	expected := "" +
-		"Table: Example\n\n" +
-		"| Name  | Value |\n" +
-		"| ----- | ----- |\n" +
-		"| hey   | you   |\n" +
-		"| a &#x7c; b | esc   |\n" +
-		"| esc   | rox%% |\n"
+	expected := trim(`
+Table: Example
+
+| Name  | Value |
+| ----- | ----- |
+| hey   | you   |
+| a &#x7c; b | esc   |
+| esc   | rox%% |
+`)
 
 	table := CreateTable()
 	table.SetModeMarkdown()
@@ -291,14 +342,15 @@ func TestTableInMarkdown(t *testing.T) {
 }
 
 func TestTitleUnicodeWidths(t *testing.T) {
-	expected := "" +
-		"+-------+\n" +
-		"| ← 5 → |\n" +
-		"+---+---+\n" +
-		"| a | b |\n" +
-		"| c | d |\n" +
-		"| e | 3 |\n" +
-		"+---+---+\n"
+	expected := trim(`
++-------+
+| ← 5 → |
++---+---+
+| a | b |
+| c | d |
+| e | 3 |
++---+---+
+`)
 
 	// minimum width for a table of two columns is 9 characters, given
 	// one space of padding, and non-empty tables.
@@ -326,15 +378,16 @@ func TestTitleUnicodeWidths(t *testing.T) {
 // This tests that we correctly accumulate the maximum width across all rows of
 // the termtable and adjust width accordingly.
 func TestTableWidthHandling(t *testing.T) {
-	expected := "" +
-		"+-----------------------------------------+\n" +
-		"|        Example... to Fix My Test        |\n" +
-		"+-----------------+-----------------------+\n" +
-		"| hey foo bar baz | you                   |\n" +
-		"| ken             | you should write code |\n" +
-		"| derek           | 3.14                  |\n" +
-		"| derek too       | 3.15                  |\n" +
-		"+-----------------+-----------------------+\n"
+	expected := trim(`
++-----------------------------------------+
+|        Example... to Fix My Test        |
++-----------------+-----------------------+
+| hey foo bar baz | you                   |
+| ken             | you should write code |
+| derek           | 3.14                  |
+| derek too       | 3.15                  |
++-----------------+-----------------------+
+`)
 
 	table := CreateTable()
 
@@ -344,23 +397,20 @@ func TestTableWidthHandling(t *testing.T) {
 	table.AddRow("derek", 3.14)
 	table.AddRow("derek too", 3.1456788)
 
-	output := table.Render()
-	if output != expected {
-		t.Fatal(DisplayFailedOutput(output, expected))
-	}
-
+	checkRendersTo(t, table, expected)
 }
 
 func TestTableWidthHandling_SecondErrorCondition(t *testing.T) {
-	expected := "" +
-		"+----------------------------------------+\n" +
-		"|       Example... to Fix My Test        |\n" +
-		"+-----------------+----------------------+\n" +
-		"| hey foo bar baz | you                  |\n" +
-		"| ken             | you should sell cod! |\n" +
-		"| derek           | 3.14                 |\n" +
-		"| derek too       | 3.15                 |\n" +
-		"+-----------------+----------------------+\n"
+	expected := trim(`
++----------------------------------------+
+|       Example... to Fix My Test        |
++-----------------+----------------------+
+| hey foo bar baz | you                  |
+| ken             | you should sell cod! |
+| derek           | 3.14                 |
+| derek too       | 3.15                 |
++-----------------+----------------------+
+`)
 
 	table := CreateTable()
 
@@ -370,23 +420,21 @@ func TestTableWidthHandling_SecondErrorCondition(t *testing.T) {
 	table.AddRow("derek", 3.14)
 	table.AddRow("derek too", 3.1456788)
 
-	output := table.Render()
-	if output != expected {
-		t.Fatal(DisplayFailedOutput(output, expected))
-	}
+	checkRendersTo(t, table, expected)
 }
 
 func TestTableAlignPostsetting(t *testing.T) {
-	expected := "" +
-		"+-----------+-------+\n" +
-		"| Name      | Value |\n" +
-		"+-----------+-------+\n" +
-		"|       hey | you   |\n" +
-		"|       ken | 1234  |\n" +
-		"|     derek | 3.14  |\n" +
-		"| derek too | 3.15  |\n" +
-		"|  escaping | rox%% |\n" +
-		"+-----------+-------+\n"
+	expected := trim(`
++-----------+-------+
+| Name      | Value |
++-----------+-------+
+|       hey | you   |
+|       ken | 1234  |
+|     derek | 3.14  |
+| derek too | 3.15  |
+|  escaping | rox%% |
++-----------+-------+
+`)
 
 	table := CreateTable()
 
@@ -403,15 +451,16 @@ func TestTableAlignPostsetting(t *testing.T) {
 }
 
 func TestTableMissingCells(t *testing.T) {
-	expected := "" +
-		"+----------+---------+---------+\n" +
-		"| Name     | Value 1 | Value 2 |\n" +
-		"+----------+---------+---------+\n" +
-		"| hey      | you     | person  |\n" +
-		"| ken      | 1234    |\n" +
-		"| escaping | rox%s%% |\n" +
-		"+----------+---------+---------+\n"
-		// FIXME: missing extra cells there
+	expected := trim(`
++----------+---------+---------+
+| Name     | Value 1 | Value 2 |
++----------+---------+---------+
+| hey      | you     | person  |
+| ken      | 1234    |
+| escaping | rox%s%% |
++----------+---------+---------+
+`)
+	// FIXME: missing extra cells there
 
 	table := CreateTable()
 
@@ -428,12 +477,13 @@ func TestTableMissingCells(t *testing.T) {
 // Unicode is a grapheme cluster.  This disabled test shows what we want
 // to support, but don't yet.
 func TestTableWithCombiningChars(t *testing.T) {
-	expected := "" +
-		"+------+---+\n" +
-		"| noel | 1 |\n" +
-		"| noël | 2 |\n" +
-		"| noël | 3 |\n" +
-		"+------+---+\n"
+	expected := trim(`
++------+---+
+| noel | 1 |
+| noël | 2 |
+| noël | 3 |
++------+---+
+`)
 
 	table := CreateTable()
 
@@ -446,11 +496,12 @@ func TestTableWithCombiningChars(t *testing.T) {
 
 // another unicode length issue
 func TestTableWithFullwidthChars(t *testing.T) {
-	expected := "" +
-		"+----------+------------+\n" +
-		"| wide     | not really |\n" +
-		"| ｗｉｄｅ | fullwidth  |\n" +
-		"+----------+------------+\n"
+	expected := trim(`
++----------+------------+
+| wide     | not really |
+| ｗｉｄｅ | fullwidth  |
++----------+------------+
+`)
 
 	table := CreateTable()
 	table.AddRow("wide", "not really")
@@ -463,15 +514,16 @@ func TestTableWithFullwidthChars(t *testing.T) {
 // look like they line up but you can visually confirm its accuracy with a
 // fmt.Print.
 func TestCJKChars(t *testing.T) {
-	expected := "" +
-		"+-------+---------+----------+\n" +
-		"| KeyID | ValueID | ValueCN  |\n" +
-		"+-------+---------+----------+\n" +
-		"| 8     | 51      | 精钢     |\n" +
-		"| 8     | 52      | 鳄鱼皮   |\n" +
-		"| 8     | 53      | 镀金皮带 |\n" +
-		"| 8     | 54      | 精钢     |\n" +
-		"+-------+---------+----------+\n"
+	expected := trim(`
++-------+---------+----------+
+| KeyID | ValueID | ValueCN  |
++-------+---------+----------+
+| 8     | 51      | 精钢     |
+| 8     | 52      | 鳄鱼皮   |
+| 8     | 53      | 镀金皮带 |
+| 8     | 54      | 精钢     |
++-------+---------+----------+
+`)
 
 	table := CreateTable()
 	table.AddHeaderRow("KeyID", "ValueID", "ValueCN")
@@ -481,16 +533,17 @@ func TestCJKChars(t *testing.T) {
 	table.AddRow("8", 54, "精钢")
 	checkRendersTo(t, table, expected)
 
-	expected2 := "" +
-		"+--------------------+----------------------+\n" +
-		"| field              | value                |\n" +
-		"+--------------------+----------------------+\n" +
-		"| GoodsPropertyKeyID | 9                    |\n" +
-		"| MerchantAccountID  | 0                    |\n" +
-		"| GoodsCategoryCode  | 100001               |\n" +
-		"| NameCN             | 机芯类型             |\n" +
-		"| NameJP             | ムーブメントのタイプ |\n" +
-		"+--------------------+----------------------+\n"
+	expected2 := trim(`
++--------------------+----------------------+
+| field              | value                |
++--------------------+----------------------+
+| GoodsPropertyKeyID | 9                    |
+| MerchantAccountID  | 0                    |
+| GoodsCategoryCode  | 100001               |
+| NameCN             | 机芯类型             |
+| NameJP             | ムーブメントのタイプ |
++--------------------+----------------------+
+`)
 	table = CreateTable()
 	table.AddHeaderRow("field", "value")
 	table.AddRow("GoodsPropertyKeyID", 9)
@@ -502,13 +555,14 @@ func TestCJKChars(t *testing.T) {
 }
 
 func TestTableMultipleAddHeaderRow(t *testing.T) {
-	expected := "" +
-		"+--------------+--------+\n" +
-		"| First column | Second |\n" +
-		"| Sub          | Sub    |\n" +
-		"+--------------+--------+\n" +
-		"| 2            | 3      |\n" +
-		"+--------------+--------+\n"
+	expected := trim(`
++--------------+--------+
+| First column | Second |
+| Sub          | Sub    |
++--------------+--------+
+| 2            | 3      |
++--------------+--------+
+`)
 
 	table := CreateTable()
 	table.AddHeaderRow("First column", "Second")

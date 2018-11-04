@@ -7,17 +7,19 @@ import (
 )
 
 func TestCreateTableHTML(t *testing.T) {
-	expected := "<table class=\"termtable\">\n" +
-		"<thead>\n" +
-		"<tr><th>Name</th><th>Value</th></tr>\n" +
-		"</thead>\n" +
-		"<tbody>\n" +
-		"<tr><td>hey</td><td>you</td></tr>\n" +
-		"<tr><td>ken</td><td>1234</td></tr>\n" +
-		"<tr><td>derek</td><td>3.14</td></tr>\n" +
-		"<tr><td>derek too</td><td>3.15</td></tr>\n" +
-		"</tbody>\n" +
-		"</table>\n"
+	expected := trim(`
+<table class="termtable">
+<thead>
+<tr><th>Name</th><th>Value</th></tr>
+</thead>
+<tbody>
+<tr><td>hey</td><td>you</td></tr>
+<tr><td>ken</td><td>1234</td></tr>
+<tr><td>derek</td><td>3.14</td></tr>
+<tr><td>derek too</td><td>3.15</td></tr>
+</tbody>
+</table>
+`)
 
 	table := CreateTable()
 	table.SetModeHTML()
@@ -28,25 +30,24 @@ func TestCreateTableHTML(t *testing.T) {
 	table.AddRow("derek", 3.14)
 	table.AddRow("derek too", 3.1456788)
 
-	output := table.Render()
-	if output != expected {
-		t.Fatal(DisplayFailedOutput(output, expected))
-	}
+	checkRendersTo(t, table, expected)
 }
 
 func TestTableWithHeaderHTML(t *testing.T) {
-	expected := "<table class=\"termtable\">\n" +
-		"<thead>\n" +
-		"<caption>Example</caption>\n" +
-		"<tr><th>Name</th><th>Value</th></tr>\n" +
-		"</thead>\n" +
-		"<tbody>\n" +
-		"<tr><td>hey</td><td>you</td></tr>\n" +
-		"<tr><td>ken</td><td>1234</td></tr>\n" +
-		"<tr><td>derek</td><td>3.14</td></tr>\n" +
-		"<tr><td>derek too</td><td>3.15</td></tr>\n" +
-		"</tbody>\n" +
-		"</table>\n"
+	expected := trim(`
+<table class="termtable">
+<thead>
+<caption>Example</caption>
+<tr><th>Name</th><th>Value</th></tr>
+</thead>
+<tbody>
+<tr><td>hey</td><td>you</td></tr>
+<tr><td>ken</td><td>1234</td></tr>
+<tr><td>derek</td><td>3.14</td></tr>
+<tr><td>derek too</td><td>3.15</td></tr>
+</tbody>
+</table>
+`)
 
 	table := CreateTable()
 	table.SetModeHTML()
@@ -58,25 +59,24 @@ func TestTableWithHeaderHTML(t *testing.T) {
 	table.AddRow("derek", 3.14)
 	table.AddRow("derek too", 3.1456788)
 
-	output := table.Render()
-	if output != expected {
-		t.Fatal(DisplayFailedOutput(output, expected))
-	}
+	checkRendersTo(t, table, expected)
 }
 
 func TestTableTitleWidthAdjustsHTML(t *testing.T) {
-	expected := "<table class=\"termtable\">\n" +
-		"<thead>\n" +
-		"<caption>Example My Foo Bar&#39;d Test</caption>\n" +
-		"<tr><th>Name</th><th>Value</th></tr>\n" +
-		"</thead>\n" +
-		"<tbody>\n" +
-		"<tr><td>hey</td><td>you</td></tr>\n" +
-		"<tr><td>ken</td><td>1234</td></tr>\n" +
-		"<tr><td>derek</td><td>3.14</td></tr>\n" +
-		"<tr><td>derek too</td><td>3.15</td></tr>\n" +
-		"</tbody>\n" +
-		"</table>\n"
+	expected := trim(`
+<table class="termtable">
+<thead>
+<caption>Example My Foo Bar&#39;d Test</caption>
+<tr><th>Name</th><th>Value</th></tr>
+</thead>
+<tbody>
+<tr><td>hey</td><td>you</td></tr>
+<tr><td>ken</td><td>1234</td></tr>
+<tr><td>derek</td><td>3.14</td></tr>
+<tr><td>derek too</td><td>3.15</td></tr>
+</tbody>
+</table>
+`)
 
 	table := CreateTable()
 	table.SetModeHTML()
@@ -88,21 +88,20 @@ func TestTableTitleWidthAdjustsHTML(t *testing.T) {
 	table.AddRow("derek", 3.14)
 	table.AddRow("derek too", 3.1456788)
 
-	output := table.Render()
-	if output != expected {
-		t.Fatal(DisplayFailedOutput(output, expected))
-	}
+	checkRendersTo(t, table, expected)
 }
 
 func TestTableWithNoHeadersHTML(t *testing.T) {
-	expected := "<table class=\"termtable\">\n" +
-		"<tbody>\n" +
-		"<tr><td>hey</td><td>you</td></tr>\n" +
-		"<tr><td>ken</td><td>1234</td></tr>\n" +
-		"<tr><td>derek</td><td>3.14</td></tr>\n" +
-		"<tr><td>derek too</td><td>3.15</td></tr>\n" +
-		"</tbody>\n" +
-		"</table>\n"
+	expected := trim(`
+<table class="termtable">
+<tbody>
+<tr><td>hey</td><td>you</td></tr>
+<tr><td>ken</td><td>1234</td></tr>
+<tr><td>derek</td><td>3.14</td></tr>
+<tr><td>derek too</td><td>3.15</td></tr>
+</tbody>
+</table>
+`)
 
 	table := CreateTable()
 	table.SetModeHTML()
@@ -112,24 +111,23 @@ func TestTableWithNoHeadersHTML(t *testing.T) {
 	table.AddRow("derek", 3.14)
 	table.AddRow("derek too", 3.1456788)
 
-	output := table.Render()
-	if output != expected {
-		t.Fatal(DisplayFailedOutput(output, expected))
-	}
+	checkRendersTo(t, table, expected)
 }
 
 func TestTableUnicodeWidthsHTML(t *testing.T) {
-	expected := "<table class=\"termtable\">\n" +
-		"<thead>\n" +
-		"<tr><th>Name</th><th>Cost</th></tr>\n" +
-		"</thead>\n" +
-		"<tbody>\n" +
-		"<tr><td>Currency</td><td>¤10</td></tr>\n" +
-		"<tr><td>US Dollar</td><td>$30</td></tr>\n" +
-		"<tr><td>Euro</td><td>€27</td></tr>\n" +
-		"<tr><td>Thai</td><td>฿70</td></tr>\n" +
-		"</tbody>\n" +
-		"</table>\n"
+	expected := trim(`
+<table class="termtable">
+<thead>
+<tr><th>Name</th><th>Cost</th></tr>
+</thead>
+<tbody>
+<tr><td>Currency</td><td>¤10</td></tr>
+<tr><td>US Dollar</td><td>$30</td></tr>
+<tr><td>Euro</td><td>€27</td></tr>
+<tr><td>Thai</td><td>฿70</td></tr>
+</tbody>
+</table>
+`)
 
 	table := CreateTable()
 	table.SetModeHTML()
@@ -139,22 +137,21 @@ func TestTableUnicodeWidthsHTML(t *testing.T) {
 	table.AddRow("Euro", "€27")
 	table.AddRow("Thai", "฿70")
 
-	output := table.Render()
-	if output != expected {
-		t.Fatal(DisplayFailedOutput(output, expected))
-	}
+	checkRendersTo(t, table, expected)
 }
 
 func TestTableWithAlignment(t *testing.T) {
-	expected := "<table class=\"termtable\">\n" +
-		"<thead>\n" +
-		"<tr><th>Foo</th><th>Bar</th></tr>\n" +
-		"</thead>\n" +
-		"<tbody>\n" +
-		"<tr><td>humpty</td><td>dumpty</td></tr>\n" +
-		"<tr><td align='right'>r</td><td>&lt;- on right</td></tr>\n" +
-		"</tbody>\n" +
-		"</table>\n"
+	expected := trim(`
+<table class="termtable">
+<thead>
+<tr><th>Foo</th><th>Bar</th></tr>
+</thead>
+<tbody>
+<tr><td>humpty</td><td>dumpty</td></tr>
+<tr><td align='right'>r</td><td>&lt;- on right</td></tr>
+</tbody>
+</table>
+`)
 
 	table := CreateTable()
 	table.SetModeHTML()
@@ -162,23 +159,22 @@ func TestTableWithAlignment(t *testing.T) {
 	table.AddRow("humpty", "dumpty")
 	table.AddRow(CreateCell("r", &CellStyle{Alignment: AlignRight}), "<- on right")
 
-	output := table.Render()
-	if output != expected {
-		t.Fatal(DisplayFailedOutput(output, expected))
-	}
+	checkRendersTo(t, table, expected)
 }
 
 func TestTableAfterSetAlign(t *testing.T) {
-	expected := "<table class=\"termtable\">\n" +
-		"<thead>\n" +
-		"<tr><th>Alphabetical</th><th>Num</th></tr>\n" +
-		"</thead>\n" +
-		"<tbody>\n" +
-		"<tr><td align='right'>alfa</td><td>1</td></tr>\n" +
-		"<tr><td align='right'>bravo</td><td>2</td></tr>\n" +
-		"<tr><td align='right'>charlie</td><td>3</td></tr>\n" +
-		"</tbody>\n" +
-		"</table>\n"
+	expected := trim(`
+<table class="termtable">
+<thead>
+<tr><th>Alphabetical</th><th>Num</th></tr>
+</thead>
+<tbody>
+<tr><td align='right'>alfa</td><td>1</td></tr>
+<tr><td align='right'>bravo</td><td>2</td></tr>
+<tr><td align='right'>charlie</td><td>3</td></tr>
+</tbody>
+</table>
+`)
 
 	table := CreateTable()
 	table.SetModeHTML()
@@ -188,24 +184,22 @@ func TestTableAfterSetAlign(t *testing.T) {
 	table.AddRow("charlie", 3)
 	table.SetAlign(AlignRight, 1)
 
-	output := table.Render()
-	if output != expected {
-		t.Fatal(DisplayFailedOutput(output, expected))
-	}
+	checkRendersTo(t, table, expected)
 }
 
 func TestTableWithAltTitleStyle(t *testing.T) {
-	expected := "" +
-		"<table class=\"termtable\">\n" +
-		"<thead>\n" +
-		"<tr><th style=\"text-align: center\" colspan=\"3\">Metasyntactic</th></tr>\n" +
-		"<tr><th>Foo</th><th>Bar</th><th>Baz</th></tr>\n" +
-		"</thead>\n" +
-		"<tbody>\n" +
-		"<tr><td>a</td><td>b</td><td>c</td></tr>\n" +
-		"<tr><td>α</td><td>β</td><td>γ</td></tr>\n" +
-		"</tbody>\n" +
-		"</table>\n"
+	expected := trim(`
+<table class="termtable">
+<thead>
+<tr><th style="text-align: center" colspan="3">Metasyntactic</th></tr>
+<tr><th>Foo</th><th>Bar</th><th>Baz</th></tr>
+</thead>
+<tbody>
+<tr><td>a</td><td>b</td><td>c</td></tr>
+<tr><td>α</td><td>β</td><td>γ</td></tr>
+</tbody>
+</table>
+`)
 
 	table := CreateTable()
 	table.SetModeHTML()
@@ -215,8 +209,32 @@ func TestTableWithAltTitleStyle(t *testing.T) {
 	table.AddRow("a", "b", "c")
 	table.AddRow("α", "β", "γ")
 
-	output := table.Render()
-	if output != expected {
-		t.Fatal(DisplayFailedOutput(output, expected))
-	}
+	checkRendersTo(t, table, expected)
+}
+
+func TestTableWithMultipleHeaderRows(t *testing.T) {
+	expected := trim(`
+<table class="termtable">
+<thead>
+<tr><th style="text-align: center" colspan="2">Metasyntactic</th></tr>
+<tr><th>Foo</th><th>Bar</th></tr>
+<tr><th>Baz</th><th>Quux</th></tr>
+</thead>
+<tbody>
+<tr><td>a</td><td>b</td></tr>
+<tr><td>α</td><td>β</td></tr>
+</tbody>
+</table>
+`)
+
+	table := CreateTable()
+	table.SetModeHTML()
+	table.SetHTMLStyleTitle(TitleAsThSpan)
+	table.AddTitle("Metasyntactic")
+	table.AddHeaderRow("Foo", "Bar")
+	table.AddHeaderRow("Baz", "Quux")
+	table.AddRow("a", "b")
+	table.AddRow("α", "β")
+
+	checkRendersTo(t, table, expected)
 }
