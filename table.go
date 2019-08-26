@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/houseabsolute/termtables/term"
+	"github.com/apcera/termtables/term"
 )
 
 // MaxColumns represents the maximum number of columns that are available for

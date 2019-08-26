@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/houseabsolute/termtables/term"
+	"github.com/apcera/termtables/term"
 )
 
 func main() {
